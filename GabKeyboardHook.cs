@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace GabSoftware.Utils
 {
@@ -374,13 +375,15 @@ namespace GabSoftware.Utils
                 //install hook
 
                 module = Assembly.GetExecutingAssembly().GetModules()[0];
-                hinstance = Marshal.GetHINSTANCE(module);
+                //hinstance = Marshal.GetHINSTANCE(module);
+                hinstance = Process.GetCurrentProcess().MainModule.BaseAddress;
 
                 hKeyboardHook = SetWindowsHookEx(
                     WH_KEYBOARD_LL,
                     KeyboardHookProcedure,
                     hinstance,
                     0);
+
                 //If SetWindowsHookEx fails.
                 if (hKeyboardHook == 0)
                 {
